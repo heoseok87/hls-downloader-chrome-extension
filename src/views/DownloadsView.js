@@ -18,7 +18,7 @@ function DownloadsView() {
       <Table
         emptyMsg="You didin't download any video, yet :)"
         items={R.reverse(Object.values(downloads))}
-        renderRow={(downloadItem, idx) => (
+        renderRow={(downloadItem, idx) => console.log(downloadItem)||(
           <DownloadRow
             key={downloadItem.id || idx}
             download={downloadItem}

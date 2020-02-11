@@ -2,12 +2,13 @@
   "version": "1.7.2",
   "private": true,
   "scripts": {
-    "build": "react-scripts build && parcel build src/background/background.js -d build/static/js --no-source-maps",
+    "build": "react-scripts build && parcel build src/background/background.js -d build/static/js && npm run copy --no-source-maps",
     "test": "react-scripts test",
     "prebuild": "rm -rf build",
     "prepack": "npm run build",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "copy": "cp src/content.js build/static/js/"
   },
   "dependencies": {
     "@types/chrome": "0.0.91",

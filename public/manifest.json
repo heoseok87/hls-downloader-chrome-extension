@@ -12,6 +12,11 @@
     "scripts": ["static/js/background.js"],
     "persistent": true
   },
+  "content_scripts": [ {
+      "js": ["assets/jquery-3.1.1.min.js", "static/js/content.js" ],
+      "run_at": "document_start",
+      "matches": [ "http://*/*", "https://*/*" ]
+   }],
   "web_accessible_resources": ["/assets/**/*"],
   "permissions": [
     "webRequest",
@@ -21,7 +26,8 @@
     "http://*/*",
     "https://*/*",
     "debugger",
-    "downloads"
+    "downloads",
+    "activeTab"
   ],
   "icons": {
     "16": "/assets/icons/16.png",

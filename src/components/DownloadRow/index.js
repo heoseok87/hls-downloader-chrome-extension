@@ -64,7 +64,7 @@ export function copyToClipboard(text) {
   document.body.removeChild(input);
 }
 function DownloadRow(props) {
-  const { download, removeDownload, chromeDownload } = props;
+  const { download, removeDownload, chromeDownload, request } = props;
   const progress = ((download.finished / download.total) * 100).toFixed(0);
   const date =
     new Date(download.created).toLocaleDateString() +
@@ -75,8 +75,8 @@ function DownloadRow(props) {
     <StyledRow disable={true} center="xs" middle="xs" between="xs">
       <DetailsRow>
         <Row start="xs">
-          <StyledTitle title={download.tab.title} xs={10}>
-            {download.tab.title}
+          <StyledTitle title={download.current.episode_name} xs={10}>
+            {download.current.episode_name}
           </StyledTitle>
         </Row>
         <Row start="xs">

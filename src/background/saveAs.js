@@ -3,7 +3,7 @@ import { urlnameParse } from "../components/RequestRow/urlnameParse";
 import sanitize from "sanitize-filename";
 
 function getFilename(download) {
-  return `${download.tab.title} - ${urlnameParse(download.title)}.mp4`;
+  return `${download.current.episode_name}.mp4`;
 }
 
 function saveAs(action) {

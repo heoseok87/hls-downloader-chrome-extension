@@ -72,7 +72,8 @@ function* downloadPlaylist(action) {
         total: segments.length,
         finished: 0,
         created: Date.now(),
-        tab: request.tab
+        tab: request.tab,
+        current: request.current
       })
     );
 
@@ -114,7 +115,7 @@ function* downloadPlaylist(action) {
         const link = URL.createObjectURL(blobBuilder.build());
         yield put(downloadFinished({ id, link }));
         yield put(
-          chromeDownload({ id, link, title: request.url, tab: request.tab })
+          chromeDownload({ id, link, title: request.url, tab: request.tab, current: request.current })
         );
         return;
       }

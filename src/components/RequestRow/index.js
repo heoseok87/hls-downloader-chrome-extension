@@ -21,8 +21,8 @@ function RequestRow(props) {
     <StyledRow middle="xs" between="xs" onClick={onClick}>
       <DetailsRow>
         <Row start="xs">
-          <StyledTitle title={tab.title} xs={10}>
-            {tab.title}
+          <StyledTitle title={request.current.episode_name} xs={10}>
+            {request.current.episode_name}
           </StyledTitle>
         </Row>
         <Row start="xs">
