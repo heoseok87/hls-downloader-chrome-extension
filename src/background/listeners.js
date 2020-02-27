@@ -32,41 +32,18 @@ var makeName = function(program, ep){
 	return result;
 }
 
-var programData = {};
+var pooqUrl = {};
 
 chrome.webRequest.onCompleted.addListener(
 		  async function(req) {
 		    if (req.tabId < 0) {
 		      return;
 		    }
-		    callRemote(req.url, function(resp) {
-				var json = JSON.parse(resp);
-				programData[json.contentid] = {
-					title : json.programtitle,
-					ep : json.episodenumber
-				};
-			});
+		    console.log(req.url.split("/")[5].split("?")[0]);
+		    pooqUrl[req.url.split("/")[5].split("?")[0]] = req.url;
 		  },
 		  {
 		    urls: ["https://apis.pooq.co.kr/vod/contents/*"]
-		  },
-		  []
-		);
-
-chrome.webRequest.onCompleted.addListener(
-		  async function(req) {
-		    if (req.tabId < 0) {
-		      return;
-		    }
-		    chrome.tabs.sendMessage(req.tabId, {
-				url : req.url
-			}, null, function(data) {
-				console.log(data);
-				programData[details.url] = data;
-			});
-		  },
-		  {
-		    urls: ["https://*.tving.com/*/playlist.m3u8"]
 		  },
 		  []
 		);
@@ -86,7 +63,17 @@ chrome.webRequest.onCompleted.addListener(
     
 	if (req.url
 				.indexOf('wavve.com') > -1) {
-		program = programData[req.url.split("/")[5]];
+		console.log(pooqUrl);
+	    	await callRemote(pooqUrl[req.url.split("/")[5]], function(resp) {
+				var json = JSON.parse(resp);
+				program = {
+					title : json.programtitle,
+					ep : json.episodenumber
+				};
+				console.log(program);
+				appendRequest(req, manifest, program);
+	    	});
+	    return;
 	}else if(req.url.indexOf('tving.com') > -1){
 		chrome.tabs.sendMessage(req.tabId, {
 			url : req.url
