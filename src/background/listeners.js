@@ -39,7 +39,6 @@ chrome.webRequest.onCompleted.addListener(
 		    if (req.tabId < 0) {
 		      return;
 		    }
-		    console.log(req.url.split("/")[5].split("?")[0]);
 		    pooqUrl[req.url.split("/")[5].split("?")[0]] = req.url;
 		  },
 		  {
@@ -63,8 +62,16 @@ chrome.webRequest.onCompleted.addListener(
     
 	if (req.url
 				.indexOf('wavve.com') > -1) {
+		var contentId;
+		if(req.url.indexOf('event.pca') > -1){
+			contentId = req.url.split("/")[8];
+		}else{
+			contentId = req.url.split("/")[5];
+		}
 		console.log(pooqUrl);
-	    	await callRemote(pooqUrl[req.url.split("/")[5]], function(resp) {
+		console.log(contentId);
+		console.log(pooqUrl[contentId]);
+	    	await callRemote(pooqUrl[contentId], function(resp) {
 				var json = JSON.parse(resp);
 				program = {
 					title : json.programtitle,
