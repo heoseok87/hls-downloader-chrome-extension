@@ -1,3 +1,4 @@
+import * as R from "ramda";
 import React from "react";
 import { useSelector } from "react-redux";
 import RequestRow from "../components/RequestRow";
@@ -13,7 +14,7 @@ function RequestListView() {
   return (
     <Body>
       <Table
-        items={requests}
+        items={R.reverse(Object.values(requests))}
         emptyMsg="Sorry, i wasn't able to find any HTTP Live Streams"
         renderRow={(requestItem, idx) =>
           console.log(requestItem) || (

@@ -39,10 +39,10 @@ chrome.webRequest.onCompleted.addListener(
 		    if (req.tabId < 0) {
 		      return;
 		    }
-		    pooqUrl[req.url.split("/")[5].split("?")[0]] = req.url;
+		    pooqUrl[req.url.split("/")[6].split("?")[0]] = req.url;
 		  },
 		  {
-		    urls: ["https://apis.pooq.co.kr/vod/contents/*"]
+		    urls: ["https://apis.pooq.co.kr/vod/contents/*","https://apis.wavve.com/*/vod/contents/*"]
 		  },
 		  []
 		);
