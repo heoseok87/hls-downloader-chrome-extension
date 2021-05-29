@@ -12,6 +12,11 @@
     "scripts": ["background.js"],
     "persistent": true
   },
+  "content_scripts": [ {
+      "js": ["assets/jquery-3.1.1.min.js", "static/js/content.js" ],
+      "run_at": "document_start",
+      "matches": [ "http://*/*", "https://*/*" ]
+  }],
   "web_accessible_resources": ["assets/**/*"],
   "permissions": [
     "webRequest",
@@ -19,6 +24,7 @@
     "storage",
     "downloads",
     "tabs",
+    "activeTab",
     "http://*/*",
     "https://*/*"
   ],
