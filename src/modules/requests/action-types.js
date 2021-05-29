@@ -1,2 +1,0 @@
-export const ADD_REQUEST = "ADD_REQUEST";
-export const CLEAR_PLAYLIST = "CLEAR_PLAYLIST";
