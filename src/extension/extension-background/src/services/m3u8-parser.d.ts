@@ -4,6 +4,7 @@ declare module "m3u8-parser" {
     new (): M3U8Parser;
     manifest: Manifest;
     push(chunk: string): void;
+    end(): void;
   }
   type M3U8Segment = {
     byterange: {

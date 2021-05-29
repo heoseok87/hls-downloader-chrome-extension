@@ -26,7 +26,10 @@ export const M3u8Parser: IParser = {
   },
   parseMasterPlaylist(string: string, baseurl: string): Level[] {
     const parser = new Parser();
+    
     parser.push(string);
+    parser.end();
+
     const playlists = parser.manifest?.playlists ?? [];
     return playlists.map((playlist, index) => ({
       index,
