@@ -5,7 +5,7 @@ import { browser } from "webextension-polyfill-ts";
 export function addPlaylistListener( store: ReturnType<typeof createStore> ) {
     var makeName = function( program: string, ep: string ) {
         var result = '';
-        var eps = ep.split( '-' );
+        var eps = ep ? ep.split( '-' ) : [];
         result = program.replace(
             '월화 드라마 ', '' ).replace(
             '수목 드라마 ', '' ).trim();
@@ -17,6 +17,7 @@ export function addPlaylistListener( store: ReturnType<typeof createStore> ) {
             }
             result += eps[i].padStart( 2, '0' );
         }
+        console.log( result );
         return result;
     }
 
@@ -37,10 +38,14 @@ export function addPlaylistListener( store: ReturnType<typeof createStore> ) {
             if ( details.tabId < 0 ) {
                 return;
             }
-            pooqUrl[details.url.split( "/" )[6].split( "?" )[0]] = details.url;
+            var splitIndex = 6;
+            if ( details.url.indexOf( '/movie/' ) > -1 ) {
+                splitIndex = 5;
+            }
+            pooqUrl[details.url.split( "/" )[splitIndex].split( "?" )[0]] = details.url;
         },
         {
-            urls: ["https://apis.pooq.co.kr/vod/contents/*", "https://apis.wavve.com/*/vod/contents/*"]
+            urls: ["https://apis.pooq.co.kr/vod/contents/*", "https://apis.wavve.com/*/vod/contents/*", "https://apis.wavve.com/movie/contents/*"]
         }
     );
 
@@ -66,17 +71,22 @@ export function addPlaylistListener( store: ReturnType<typeof createStore> ) {
                 var contentId;
                 if ( details.url.indexOf( 'event.pca' ) > -1 ) {
                     contentId = details.url.split( "/" )[8];
+                } else if ( details.url.indexOf( 'movie' ) > -1 || details.url.indexOf( '/MV' ) > -1 ) {
+                    contentId = details.url.split( "/" )[5].split( '.' )[0];
                 } else {
                     contentId = details.url.split( "/" )[5];
                 }
+                
+                console.log(contentId);
                 await callRemote( pooqUrl[contentId], function( resp ) {
                     let json = JSON.parse( resp );
+                    console.log( json );
                     store.dispatch(
                         playlistsSlice.actions.addPlaylist( {
                             id: details.url,
                             uri: details.url,
                             initiator: tab.url,
-                            pageTitle: makeName( json.programtitle, json.episodenumber ),
+                            pageTitle: makeName( (json.programtitle && json.programtitle.length > 0) ? json.programtitle : (json.title || json.seasontitle || json.episodetitle), json.episodenumber ),
                             createdAt: Date.now(),
                         } )
                     );
