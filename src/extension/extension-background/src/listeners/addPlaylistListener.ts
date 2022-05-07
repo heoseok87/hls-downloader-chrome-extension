@@ -3,7 +3,7 @@ import { playlistsSlice } from "@hls-downloader/core/lib/adapters/redux/slices";
 import { browser } from "webextension-polyfill-ts";
 
 export function addPlaylistListener( store: ReturnType<typeof createStore> ) {
-    var makeName = function( program: string, ep: string ) {
+    var makeName = function( program: string, ep: string, subject: string ) {
         var result = '';
         var eps = ep ? ep.split( '-' ) : [];
         result = program.replace(
@@ -16,6 +16,10 @@ export function addPlaylistListener( store: ReturnType<typeof createStore> ) {
                 result += "-E";
             }
             result += eps[i].padStart( 2, '0' );
+        }
+        if(subject && subject.length > 0){
+            result += '-';
+            result += subject;
         }
         console.log( result );
         return result;
@@ -86,7 +90,7 @@ export function addPlaylistListener( store: ReturnType<typeof createStore> ) {
                             id: details.url,
                             uri: details.url,
                             initiator: tab.url,
-                            pageTitle: makeName( (json.programtitle && json.programtitle.length > 0) ? json.programtitle : (json.title || json.seasontitle || json.episodetitle), json.episodenumber ),
+                            pageTitle: makeName( (json.programtitle && json.programtitle.length > 0) ? json.programtitle : (json.title || json.seasontitle || json.episodetitle), json.episodenumber, '' ),
                             createdAt: Date.now(),
                         } )
                     );
@@ -102,7 +106,7 @@ export function addPlaylistListener( store: ReturnType<typeof createStore> ) {
                             id: details.url,
                             uri: details.url,
                             initiator: tab.url,
-                            pageTitle: makeName( data.title, data.ep ),
+                            pageTitle: makeName( data.title, data.ep, data.subject ),
                             createdAt: Date.now(),
                         } )
                     );
